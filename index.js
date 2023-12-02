@@ -7,14 +7,13 @@ const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//1. GET a random joke
+
 app.get("/random",(req,res)=>{
   const randomIndex=Math.floor(Math.random()*jokes.length);
   res.json(jokes[randomIndex]);
 })
 
- 
-//2. GET a specific joke by id
+
 app.get("/jokes/:id",(req,res)=>{
   const id=parseInt(req.params.id);
   const foundJoke=jokes.find((joke) => joke.id === id);
@@ -22,7 +21,7 @@ app.get("/jokes/:id",(req,res)=>{
  }) 
  
  
-//3. GET a jokes by filtering on the joke type
+
 app.get("/filter",(req,res)=>{
   const type=req.query.type;
   const filter=jokes.filter((joke)=>joke.jokeType===type);
@@ -30,7 +29,7 @@ app.get("/filter",(req,res)=>{
   res.json(filter[randomIndex]);
 })
 
-//4. POST a new joke
+// POST a new joke
 app.post("/jokes",(req,res)=>{
   const newJoke={
     id:jokes.length+1,
@@ -81,18 +80,7 @@ app.delete("/jokes/:id", (req, res) => {
       .json({ error: `Joke with id: ${id} not found. No jokes were deleted.` });
   }
 });
-//8. DELETE All jokes
-app.delete("/all", (req, res) => {
-  const userKey = req.query.key;
-  if (userKey === masterKey) {
-    jokes = [];
-    res.sendStatus(200);
-  } else {
-    res
-      .status(404)
-      .json({ error: `You are not authorised to perform this action.` });
-  }
-});
+
 
 app.listen(port, () => {
   console.log(`Successfully started server on port ${port}.`);
